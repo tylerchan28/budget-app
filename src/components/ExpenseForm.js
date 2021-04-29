@@ -1,13 +1,12 @@
 import React from "react";
 import moment from "moment";
 import { SingleDatePicker } from "react-dates";
-import 'react-dates/initialize';
-import "react-dates/lib/css/_datepicker.css";
+
 
 export default class ExpenseForm extends React.Component {
     constructor(props) {
         super(props)
-
+        // takes in props.expense
         this.state = {
             description: props.expense ? props.expense.description : "",
             note: props.expense ? props.expense.note : "",
