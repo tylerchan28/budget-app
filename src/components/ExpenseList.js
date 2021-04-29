@@ -3,13 +3,19 @@ import { connect } from "react-redux";
 import ExpenseListItem from "./ExpenseListItem";
 import selectExpenses from "../selectors/expenses";
 
-const ExpenseList = (props) => ( // THIS FUNCTION IS WHAT DISPLAYS THE EXPENSES TO SCREEN
+export const ExpenseList = (props) => ( // THIS FUNCTION IS WHAT DISPLAYS THE EXPENSES TO SCREEN
     // takes in entire expenses list (as more expenses are added) and transforms to ExpenseListItem
     <div>
-        <h1>Expense List</h1>
-        {props.expenses.map((expense) => {
-            return <ExpenseListItem key={expense.id} {...expense} />
-        })} 
+        {
+            props.expenses.length === 0 ? (
+                <p>No expenses.</p>
+            ) : (
+                props.expenses.map((expense) => {
+                    return <ExpenseListItem key={expense.id} {...expense} />
+                })
+            )
+        }
+
     </div>
 );
 // {...expenses} takes k/v from expense and passes it as props
