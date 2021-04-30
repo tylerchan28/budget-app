@@ -3,36 +3,40 @@ import { connect } from "react-redux";
 import ExpenseForm from "./ExpenseForm";
 import { editExpense, removeExpense } from "../actions/expenses"; 
 
-const EditExpensePage = (props) => {
-    return (
-        <div>
-            <ExpenseForm 
-                expense={props.expense} // populates form when editing, different from expense variables below
-                onSubmit={(expense) => { 
-                    //dispatch action to edit expense
-                    //redirect to dashboard
-                    props.dispatch(editExpense(props.expense.id, expense)) // since expense={props.expense}
-                    //  as the prop.expense changes, expense acts as the updater
-                    props.history.push("/");
-                    console.log("updated", expense);
-                }}
-            />
-            <button onClick={() => {
-                props.dispatch(removeExpense({ id: props.expense.id }));
-                props.history.push("/");
+export class EditExpensePage extends React.Component {
+    onSubmit = (expense) => { 
+        this.props.editExpense(this.props.expense.id, expense)
+        this.props.history.push("/");
+    }
+    onRemove = () => {
+        this.props.removeExpense({ id: this.props.expense.id });
+        this.props.history.push("/");
+    }
+    render() {
+        return (
+            <div>
+                <ExpenseForm 
+                    expense={this.props.expense}
+                    onSubmit={this.onSubmit}
+                />
+                <button onClick={this.onRemove}>Remove</button>
+            </div>
+        )
 
-            }}>Remove</button>
-        </div>
-    )
+    }
 }
-
 const mapStateToProps = (state, props) => {
     return {
         expense: state.expenses.find((expense) => expense.id === props.match.params.id)  
     }
-}
+} // returns the current expense object as props
+ // this.props.expense points to object that returns true
+const mapDispatchToProps = (dispatch) => ({
+    editExpense: (id, expense) => dispatch(editExpense(id, expense)),
+    removeExpense: (data) => dispatch(removeExpense(data))
+})
 
-
-export default connect(mapStateToProps)(EditExpensePage);
+export default connect(mapStateToProps, mapDispatchToProps)(EditExpensePage);
 
 // set up mapStateToProps when you need more than dispatch()
+    // this.props.expense.id
