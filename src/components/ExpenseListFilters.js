@@ -3,17 +3,27 @@ import { connect } from "react-redux";
 import { DateRangePicker } from "react-dates";
 import { setTextFilter, sortByAmount, sortByDate, setStartDate, setEndDate} from "../actions/filters";
 
-
-class ExpenseListFilters extends React.Component {
+export class ExpenseListFilters extends React.Component {
     state = {
         calendarFocused: null,
     }
     onDatesChange = ({ startDate, endDate }) => {
-        this.props.dispatch(setStartDate(startDate));
-        this.props.dispatch(setEndDate(endDate));
+        this.props.setStartDate(startDate);
+        this.props.setEndDate(endDate);
     }
     onFocusChange = (calendarFocused) => {
-        this.setState(() => ({ calendarFocused }))
+        this.setState(() => ({ calendarFocused }));
+    }
+    onTextChange = (e) => {
+        this.props.setTextFilter(e.target.value);
+        //on each keystroke, changes text filter to input value
+    }
+    onSortChange = (e) => {
+        if (e.target.value === "date") {
+            this.props.sortByDate();
+        } else if (e.target.value === "amount") {
+            this.props.sortByAmount();
+        }
     }
     render() {
         return (
@@ -21,20 +31,11 @@ class ExpenseListFilters extends React.Component {
                 <input 
                     type="text" 
                     value={this.props.filters.text} // controlled input, controlled by javascript
-                    onChange={(e) => {
-                        this.props.dispatch(setTextFilter(e.target.value))
-                    //on each keystroke, changes text filter to input value
-                    }}
+                    onChange={this.onTextChange}
                 />
                 <select 
                     value={this.props.filters.sortBy} 
-                    onChange={(e) => {
-                        if (e.target.value === "date") {
-                            this.props.dispatch(sortByDate());
-                        } else if (e.target.value === "amount") {
-                            this.props.dispatch(sortByAmount());
-                        }
-                    }}
+                    onChange={this.onSortChange}
                 >
                     <option value="date">Date</option>
                     <option value="amount">Amount</option>
@@ -61,8 +62,16 @@ const mapStateToProps = (state) => {
         filters: state.filters
     }
 }
-
 // allows user to write to the store through props.dispatch
 // connect function allows us to use prop.dispatch rather than store.dispatch
     // react-redux injects dispatch method into props
-export default connect(mapStateToProps)(ExpenseListFilters);
+
+const mapDispatchToProps = (dispatch) => ({
+    setTextFilter: (text) => dispatch(setTextFilter(text)),
+    sortByDate: () => dispatch(sortByDate()),
+    sortByAmount: () => dispatch(sortByAmount()),
+    setStartDate: (startDate) => dispatch(setStartDate(startDate)),
+    setEndDate: (endDate) => dispatch(setEndDate(endDate))
+})
+// variables here are same as in their action generators
+export default connect(mapStateToProps, mapDispatchToProps)(ExpenseListFilters);
