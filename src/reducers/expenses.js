@@ -23,6 +23,8 @@ export default (state = expensesReducerDefaultState, action) => {
                     return expense; //no change to expenses if no id match
                 };
             });
+        case "SET_EXPENSES":
+            return action.expenses;
         default:
             return state;
     }
