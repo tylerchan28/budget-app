@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux"; // need this to call dispatch()
 import ExpenseForm from "./ExpenseForm";
-import { addExpense } from "../actions/expenses";
+import { startAddExpense } from "../actions/expenses";
 
 export class AddExpensePage extends React.Component {
     onSubmit = (expense) => {
         // props.dispatch(addExpense(expense));
-        this.props.addExpense(expense);
+        this.props.startAddExpense(expense);
         // dispatched from mapDispatchToProps (must use props.)
         // same functionality as props.dispatch(addExpense(expense)
         this.props.history.push("/"); //switches to dashboard after onSubmit w/ browser routing
@@ -26,7 +26,7 @@ export class AddExpensePage extends React.Component {
 
 
 const mapDispatchToProps = (dispatch) => ({
-        addExpense: (expense) => dispatch(addExpense(expense))
+        startAddExpense: (expense) => dispatch(startAddExpense(expense))
     })
 
 export default connect(undefined, mapDispatchToProps)(AddExpensePage);
