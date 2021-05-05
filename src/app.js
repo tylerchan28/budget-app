@@ -10,6 +10,7 @@ import "./styles/styles.scss";
 import 'react-dates/initialize';
 import "react-dates/lib/css/_datepicker.css";
 import { firebase } from "./firebase/firebase";
+import LoadingPage from "./components/LoadingPage";
 
 const store = configureStore();
 
@@ -27,7 +28,7 @@ const renderApp = () => {
     }
 }
 
-ReactDOM.render(<p>Loading...</p>, document.getElementById("app"));
+ReactDOM.render(<LoadingPage />, document.getElementById("app"));
 
 
 
@@ -47,6 +48,3 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 })
 
-// dispatches in this because code runs when user first visits webpage
-// not in the auth.js action, if dispatched there, values would be set or cleared
-    // if someone explicity logged in or logged out

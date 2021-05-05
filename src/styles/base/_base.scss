@@ -1,11 +1,15 @@
 //this css should apply to all elements of a type, specific ones go into their own file
+* {
+    box-sizing: border-box;
+}
 html {
     font-size: 62.5%; //using rem in base 10 (2.2 = 22px)
 }
 body {
-    background-color: white;
+    color: $dark-grey;
     font-family: Helvetica, Arial, sans-serif;
     font-size: $m-size;
+    line-height: 1.6;
 }
 button {
     cursor: pointer;
