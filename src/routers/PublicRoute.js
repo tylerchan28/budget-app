@@ -1,21 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
-import Header from "../components/Header";
 
-export const PrivateRoute = ({ 
+export const PublicRoute = ({ 
     isAuthenticated, 
     component: Component,
     ...rest // rest of things that are not destructured
 }) => (
     <Route {...rest} component={(props) => (
         isAuthenticated ? (
-            <div>
-                <Header />
-                <Component {...props}/>
-            </div>
+            <Redirect to="/dashboard"/>
         ) : (
-            <Redirect to="/"/>
+            <Component {...props}/> // view page if not logged in
         )
     )}/> 
 );
@@ -24,7 +20,7 @@ const mapStateToProps = (state) => ({
     isAuthenticated: !!state.auth.uid
 })
 
-export default connect(mapStateToProps)(PrivateRoute);
+export default connect(mapStateToProps)(PublicRoute);
 
 
 // doesn't get isAuthenticated or component passed into it
